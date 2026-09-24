@@ -1,5 +1,6 @@
 import { RootLayout } from '@/components/layout'
 import {
+  BrandStory,
   FeaturedCollections,
   Hero,
   Lookbook,
@@ -17,6 +18,7 @@ export function HomePage() {
       <ShopByCategory />
       <Lookbook />
       <ThriftCollection />
+      <BrandStory />
     </RootLayout>
   )
 }
