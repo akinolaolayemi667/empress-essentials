@@ -1,1 +1,7 @@
 export { RootLayout } from './RootLayout'
+export { SiteHeader } from './SiteHeader'
+export { AnnouncementBar } from './AnnouncementBar'
+export { Logo } from './Logo'
+export { SearchOverlay } from './SearchOverlay'
+export { BagDrawer } from './BagDrawer'
+export { MobileNav } from './MobileNav'

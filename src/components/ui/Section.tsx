@@ -2,10 +2,11 @@ import type { ElementType, HTMLAttributes, ReactNode } from 'react'
 import { cn } from '@/lib/cn'
 import { Container } from './Container'
 
-type SectionTone = 'canvas' | 'elevated' | 'ink'
+type SectionTone = 'canvas' | 'soft' | 'elevated' | 'ink'
 
 const toneClasses: Record<SectionTone, string> = {
   canvas: 'bg-canvas text-ink',
+  soft: 'bg-soft text-ink',
   elevated: 'bg-canvas-elevated text-ink',
   ink: 'bg-ink text-canvas',
 }
@@ -14,38 +15,45 @@ type SectionProps = HTMLAttributes<HTMLElement> & {
   as?: ElementType
   tone?: SectionTone
   contained?: boolean
-  containerSize?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  containerSize?: 'sm' | 'md' | 'lg' | 'xl' | 'wide' | 'full'
   children: ReactNode
   eyebrow?: string
   title?: string
   description?: string
+  align?: 'left' | 'center' | 'asymmetric'
 }
 
 export function Section({
   as: Component = 'section',
   tone = 'canvas',
   contained = true,
-  containerSize = 'xl',
+  containerSize = 'wide',
   children,
   className,
   eyebrow,
   title,
   description,
+  align = 'left',
   ...props
 }: SectionProps) {
+  const headerAlign =
+    align === 'center'
+      ? 'mx-auto max-w-2xl text-center'
+      : align === 'asymmetric'
+        ? 'ml-0 max-w-xl md:ml-[8%] md:max-w-2xl'
+        : 'max-w-2xl'
+
   const header =
     eyebrow || title || description ? (
-      <header className="mb-10 max-w-2xl md:mb-14">
+      <header className={cn('mb-12 md:mb-16', headerAlign)}>
         {eyebrow ? (
-          <p className="mb-3 font-body text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-muted">
-            {eyebrow}
-          </p>
+          <p className="editorial-label mb-4 text-muted">{eyebrow}</p>
         ) : null}
         {title ? (
-          <h2 className="font-display text-display-md text-balance">{title}</h2>
+          <h2 className="font-display text-h2 text-balance">{title}</h2>
         ) : null}
         {description ? (
-          <p className="mt-4 text-pretty text-editorial text-muted">
+          <p className="mt-5 text-pretty text-body-lg text-muted">
             {description}
           </p>
         ) : null}

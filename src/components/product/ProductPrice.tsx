@@ -19,7 +19,7 @@ export function ProductPrice({
   return (
     <p
       className={cn(
-        'font-body text-sm tracking-wide text-ink tabular-nums',
+        'font-body text-small tracking-wide text-ink tabular-nums',
         className,
       )}
     >

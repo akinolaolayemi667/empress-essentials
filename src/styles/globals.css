@@ -1,48 +1,55 @@
 @import "tailwindcss";
 
-/* Empress Essentials — luxury editorial design tokens */
+/* Empress Essentials — fashion editorial design system */
 @theme {
-  --color-canvas: #faf8f6;
+  --color-canvas: #ffffff;
+  --color-soft: #f8f5f3;
+  --color-ink: #111111;
+  --color-ink-secondary: #242020;
+  --color-burgundy: #6b1835;
+  --color-burgundy-deep: #481126;
+  --color-pink: #e8c7ce;
+  --color-muted: #756c6e;
+  --color-border: #e7e1df;
+
+  /* Aliases kept for existing component class names */
   --color-canvas-elevated: #ffffff;
-  --color-ink: #1c1917;
-  --color-ink-soft: #3f3a36;
-  --color-muted: #7a736c;
-  --color-line: #e6dfd7;
-  --color-wine: #5c2333;
-  --color-wine-deep: #3f1623;
-  --color-blush: #c9a9a5;
-  --color-champagne: #c4b5a0;
-  --color-stone: #d4cdc4;
+  --color-ink-soft: #242020;
+  --color-line: #e7e1df;
+  --color-wine: #6b1835;
+  --color-wine-deep: #481126;
+  --color-blush: #e8c7ce;
+  --color-stone: #e7e1df;
 
-  --font-display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
-  --font-body: "Figtree", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Playfair Display", "Times New Roman", Georgia, serif;
+  --font-body: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  --text-display-xl: clamp(2.75rem, 6vw, 4.5rem);
+  --text-editorial-display: clamp(3rem, 8vw, 5.5rem);
+  --text-display-xl: clamp(2.75rem, 6vw, 4.75rem);
+  --text-h1: clamp(2.5rem, 5vw, 4rem);
+  --text-h2: clamp(2rem, 3.5vw, 3rem);
+  --text-h3: clamp(1.5rem, 2.5vw, 2rem);
+  --text-body-lg: clamp(1.125rem, 1.4vw, 1.25rem);
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-caption: 0.6875rem;
   --text-display-lg: clamp(2.25rem, 4.5vw, 3.5rem);
   --text-display-md: clamp(1.75rem, 3vw, 2.5rem);
   --text-editorial: clamp(1.125rem, 1.5vw, 1.25rem);
 
-  --spacing-section: clamp(4rem, 10vw, 8rem);
-  --spacing-gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --spacing-section: clamp(5rem, 12vw, 9rem);
+  --spacing-gutter: clamp(1.25rem, 5vw, 3.5rem);
+  --spacing-rhythm: clamp(1.5rem, 3vw, 2.5rem);
 
   --radius-none: 0;
   --radius-sm: 0.125rem;
   --radius-md: 0.25rem;
 
-  --shadow-soft: 0 12px 40px rgb(28 25 23 / 0.06);
+  --shadow-soft: 0 16px 48px rgb(17 17 17 / 0.06);
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-editorial: 0.85s;
 
-  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(1rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  --container-wide: 90rem;
 }
 
 @layer base {
@@ -57,14 +64,30 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   body {
     margin: 0;
     min-height: 100vh;
+    overflow-x: hidden;
     background-color: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-body);
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: var(--text-body);
+    line-height: 1.65;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -73,6 +96,7 @@
 
   #root {
     min-height: 100vh;
+    overflow-x: hidden;
   }
 
   img,
@@ -104,8 +128,8 @@
   h6 {
     font-family: var(--font-display);
     font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: -0.01em;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
     margin: 0;
   }
 
@@ -114,12 +138,12 @@
   }
 
   ::selection {
-    background-color: color-mix(in srgb, var(--color-wine) 18%, transparent);
+    background-color: color-mix(in srgb, var(--color-burgundy) 16%, transparent);
     color: var(--color-ink);
   }
 
   :focus-visible {
-    outline: 1px solid var(--color-wine);
+    outline: 1px solid var(--color-burgundy);
     outline-offset: 3px;
   }
 }
@@ -144,7 +168,31 @@
   .editorial-rule {
     height: 1px;
     width: 100%;
-    background-color: var(--color-line);
+    background-color: var(--color-border);
     border: 0;
+  }
+
+  .editorial-label {
+    font-family: var(--font-body);
+    font-size: var(--text-caption);
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .image-zoom {
+    transition: transform var(--duration-editorial) var(--ease-editorial);
+  }
+
+  .group:hover .image-zoom {
+    transform: scale(1.04);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .image-zoom,
+    .group:hover .image-zoom {
+      transform: none;
+      transition: none;
+    }
   }
 }

@@ -4,13 +4,13 @@ type ProductImageProps = {
   src: string
   alt: string
   className?: string
-  aspect?: 'portrait' | 'square' | 'landscape'
+  aspect?: 'portrait' | 'square' | 'editorial'
 }
 
 const aspectClasses = {
   portrait: 'aspect-[3/4]',
   square: 'aspect-square',
-  landscape: 'aspect-[4/3]',
+  editorial: 'aspect-[4/5]',
 } as const
 
 export function ProductImage({
@@ -22,7 +22,7 @@ export function ProductImage({
   return (
     <div
       className={cn(
-        'relative overflow-hidden bg-stone/40',
+        'relative overflow-hidden bg-soft',
         aspectClasses[aspect],
         className,
       )}
@@ -31,7 +31,7 @@ export function ProductImage({
         src={src}
         alt={alt}
         loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+        className="image-zoom h-full w-full object-cover"
       />
     </div>
   )

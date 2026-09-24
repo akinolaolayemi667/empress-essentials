@@ -6,20 +6,13 @@ type ProductBadgeProps = {
   className?: string
 }
 
-const badgeTone: Record<ProductBadgeType, string> = {
-  New: 'text-wine',
-  Thrift: 'text-ink-soft',
-  Limited: 'text-wine-deep',
-  Statement: 'text-ink',
-  Seasonal: 'text-muted',
-}
-
 export function ProductBadge({ badge, className }: ProductBadgeProps) {
   return (
     <span
       className={cn(
-        'font-body text-[0.625rem] font-medium uppercase tracking-[0.2em]',
-        badgeTone[badge],
+        'editorial-label absolute left-3 top-3 z-10 bg-canvas/90 px-2.5 py-1.5 text-ink backdrop-blur-sm',
+        badge === 'New' && 'text-burgundy',
+        badge === 'Thrift' && 'text-ink-secondary',
         className,
       )}
     >

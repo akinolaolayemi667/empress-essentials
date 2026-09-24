@@ -1,6 +1,11 @@
 import { motion, type HTMLMotionProps } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/cn'
+import {
+  editorialEase,
+  motionDuration,
+  usePrefersReducedMotion,
+} from '@/hooks/usePrefersReducedMotion'
 
 type StaggerProps = HTMLMotionProps<'div'> & {
   children: ReactNode
@@ -9,15 +14,19 @@ type StaggerProps = HTMLMotionProps<'div'> & {
   delay?: number
 }
 
-const ease = [0.22, 1, 0.36, 1] as const
-
 export function Stagger({
   children,
   className,
-  stagger = 0.08,
+  stagger = 0.1,
   delay = 0,
   ...props
 }: StaggerProps) {
+  const reduced = usePrefersReducedMotion()
+
+  if (reduced) {
+    return <div className={cn(className)}>{children}</div>
+  }
+
   return (
     <motion.div
       className={cn(className)}
@@ -45,15 +54,21 @@ export function StaggerItem({
   className,
   ...props
 }: HTMLMotionProps<'div'> & { children: ReactNode }) {
+  const reduced = usePrefersReducedMotion()
+
+  if (reduced) {
+    return <div className={cn(className)}>{children}</div>
+  }
+
   return (
     <motion.div
       className={cn(className)}
       variants={{
-        hidden: { opacity: 0, y: 16 },
+        hidden: { opacity: 0, y: 24 },
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.65, ease },
+          transition: { duration: motionDuration.slow, ease: editorialEase },
         },
       }}
       {...props}

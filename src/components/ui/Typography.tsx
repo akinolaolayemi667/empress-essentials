@@ -6,6 +6,26 @@ type TextProps = HTMLAttributes<HTMLElement> & {
   children: ReactNode
 }
 
+/** Oversized magazine-style display type */
+export function EditorialDisplay({
+  as: Component = 'h1',
+  className,
+  children,
+  ...props
+}: TextProps) {
+  return (
+    <Component
+      className={cn(
+        'font-display text-editorial-display font-medium leading-[1.05] tracking-[-0.03em] text-balance',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </Component>
+  )
+}
+
 export function Display({
   as: Component = 'h1',
   className,
@@ -15,7 +35,7 @@ export function Display({
   return (
     <Component
       className={cn(
-        'font-display text-display-xl font-medium tracking-[-0.02em] text-balance',
+        'font-display text-display-xl font-medium leading-[1.08] tracking-[-0.025em] text-balance',
         className,
       )}
       {...props}
@@ -25,7 +45,26 @@ export function Display({
   )
 }
 
-export function Heading({
+export function H1({
+  as: Component = 'h1',
+  className,
+  children,
+  ...props
+}: TextProps) {
+  return (
+    <Component
+      className={cn(
+        'font-display text-h1 font-medium leading-[1.1] tracking-[-0.02em] text-balance',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </Component>
+  )
+}
+
+export function H2({
   as: Component = 'h2',
   className,
   children,
@@ -34,7 +73,7 @@ export function Heading({
   return (
     <Component
       className={cn(
-        'font-display text-display-md font-medium text-balance',
+        'font-display text-h2 font-medium leading-[1.15] tracking-[-0.02em] text-balance',
         className,
       )}
       {...props}
@@ -44,7 +83,7 @@ export function Heading({
   )
 }
 
-export function Subheading({
+export function H3({
   as: Component = 'h3',
   className,
   children,
@@ -52,7 +91,10 @@ export function Subheading({
 }: TextProps) {
   return (
     <Component
-      className={cn('font-display text-2xl font-medium md:text-3xl', className)}
+      className={cn(
+        'font-display text-h3 font-medium leading-[1.2] tracking-[-0.015em]',
+        className,
+      )}
       {...props}
     >
       {children}
@@ -60,7 +102,17 @@ export function Subheading({
   )
 }
 
-export function Eyebrow({
+/** @deprecated Prefer H2 — kept for Phase 1 call sites */
+export function Heading(props: TextProps) {
+  return <H2 {...props} />
+}
+
+/** @deprecated Prefer H3 — kept for Phase 1 call sites */
+export function Subheading(props: TextProps) {
+  return <H3 {...props} />
+}
+
+export function BodyLarge({
   as: Component = 'p',
   className,
   children,
@@ -69,7 +121,7 @@ export function Eyebrow({
   return (
     <Component
       className={cn(
-        'font-body text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-muted',
+        'font-body text-body-lg leading-relaxed text-ink-secondary text-pretty',
         className,
       )}
       {...props}
@@ -87,7 +139,10 @@ export function Body({
 }: TextProps) {
   return (
     <Component
-      className={cn('font-body text-base leading-relaxed text-ink-soft', className)}
+      className={cn(
+        'font-body text-body leading-relaxed text-ink-secondary',
+        className,
+      )}
       {...props}
     >
       {children}
@@ -104,9 +159,25 @@ export function Lead({
   return (
     <Component
       className={cn(
-        'font-body text-editorial leading-relaxed text-muted text-pretty',
+        'font-body text-body-lg leading-relaxed text-muted text-pretty',
         className,
       )}
+      {...props}
+    >
+      {children}
+    </Component>
+  )
+}
+
+export function Small({
+  as: Component = 'p',
+  className,
+  children,
+  ...props
+}: TextProps) {
+  return (
+    <Component
+      className={cn('font-body text-small leading-relaxed text-muted', className)}
       {...props}
     >
       {children}
@@ -123,7 +194,26 @@ export function Caption({
   return (
     <Component
       className={cn(
-        'font-body text-xs uppercase tracking-[0.16em] text-muted',
+        'font-body text-caption font-medium uppercase tracking-[0.2em] text-muted',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </Component>
+  )
+}
+
+export function Eyebrow({
+  as: Component = 'p',
+  className,
+  children,
+  ...props
+}: TextProps) {
+  return (
+    <Component
+      className={cn(
+        'font-body text-caption font-medium uppercase tracking-[0.22em] text-muted',
         className,
       )}
       {...props}

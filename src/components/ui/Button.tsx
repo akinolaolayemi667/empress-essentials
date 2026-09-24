@@ -14,18 +14,18 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-ink text-canvas hover:bg-wine focus-visible:outline-wine border border-ink',
+    'bg-ink text-canvas border border-ink hover:-translate-y-0.5 hover:bg-ink-secondary focus-visible:outline-burgundy',
   secondary:
-    'bg-transparent text-ink border border-ink hover:bg-ink hover:text-canvas',
+    'bg-transparent text-ink border-0 border-b border-ink rounded-none px-0 hover:border-burgundy hover:text-burgundy',
   ghost:
-    'bg-transparent text-ink-soft hover:text-ink hover:bg-stone/30 border border-transparent',
-  link: 'bg-transparent text-ink underline-offset-4 hover:underline px-0 py-0 h-auto border-0',
+    'bg-transparent text-ink-secondary hover:text-ink border border-transparent',
+  link: 'bg-transparent text-ink underline-offset-[6px] hover:underline px-0 py-0 h-auto border-0',
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: 'h-9 px-4 text-xs tracking-[0.14em]',
-  md: 'h-11 px-6 text-xs tracking-[0.16em]',
-  lg: 'h-12 px-8 text-sm tracking-[0.18em]',
+  sm: 'min-h-10 px-5 text-caption tracking-[0.18em]',
+  md: 'min-h-11 px-7 text-caption tracking-[0.2em]',
+  lg: 'min-h-12 px-9 text-small tracking-[0.2em]',
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -50,8 +50,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         disabled={disabled}
         className={cn(
-          'inline-flex items-center justify-center gap-2 font-body font-medium uppercase transition-colors duration-300 disabled:pointer-events-none disabled:opacity-40',
-          variant !== 'link' && sizeClasses[size],
+          'inline-flex items-center justify-center gap-2.5 font-body font-medium uppercase transition-[color,background-color,border-color,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] disabled:pointer-events-none disabled:opacity-40 motion-reduce:transition-none motion-reduce:hover:translate-y-0',
+          variant === 'primary' || variant === 'ghost' ? sizeClasses[size] : null,
+          variant === 'secondary' && 'py-2 text-caption tracking-[0.2em]',
           variantClasses[variant],
           fullWidth && 'w-full',
           className,
