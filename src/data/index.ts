@@ -6,3 +6,9 @@ export {
   getProductsByCollection,
   getFeaturedProducts,
 } from './catalog'
+export {
+  homepageMedia,
+  heroContent,
+  featuredCollections,
+} from './homepage'
+export type { FeaturedCollectionItem } from './homepage'

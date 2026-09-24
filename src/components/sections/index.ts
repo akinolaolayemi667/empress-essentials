@@ -1,2 +1,2 @@
-/** Phase 2+ page sections will live here (Hero, Collections, etc.). */
-export {}
+export { Hero } from './Hero'
+export { FeaturedCollections } from './FeaturedCollections'

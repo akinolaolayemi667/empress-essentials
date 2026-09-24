@@ -1,6 +1,7 @@
 export { Container } from './Container'
 export { Button } from './Button'
 export { Section } from './Section'
+export { FashionImage } from './FashionImage'
 export {
   EditorialDisplay,
   Display,
