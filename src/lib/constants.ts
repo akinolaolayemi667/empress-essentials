@@ -5,7 +5,7 @@ export const SITE = {
   tagline: 'Curated fashion for the modern woman',
   description:
     'Luxury new and thrift clothing, statement pieces, and seasonal collections.',
-  url: 'https://empressessentials.com',
+  url: 'https://empress-essentials.vercel.app',
   announcement: 'Free shipping on orders over $100',
 } as const
 
