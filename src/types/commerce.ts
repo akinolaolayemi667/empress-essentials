@@ -14,11 +14,20 @@ export type ProductCategorySlug =
   | 'statement'
   | 'seasonal'
 
+export type ProductStyleCategory =
+  | 'Dresses'
+  | 'Tops'
+  | 'Bottoms'
+  | 'Sets'
+  | 'Thrift'
+  | 'Statement'
+
 export type Product = {
   id: string
   name: string
   slug: string
   category: ProductCategorySlug
+  styleCategory: ProductStyleCategory
   collection: string
   price: number
   compareAtPrice?: number
@@ -31,6 +40,7 @@ export type Product = {
   colors?: string[]
   tags?: string[]
   inStock: boolean
+  isNew?: boolean
   isFeatured?: boolean
   createdAt: string
 }

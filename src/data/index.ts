@@ -5,6 +5,7 @@ export {
   getCollectionBySlug,
   getProductsByCollection,
   getFeaturedProducts,
+  getNewArrivals,
 } from './catalog'
 export {
   homepageMedia,
@@ -12,3 +13,5 @@ export {
   featuredCollections,
 } from './homepage'
 export type { FeaturedCollectionItem } from './homepage'
+export { shopCategories } from './shopCategories'
+export type { ShopCategoryItem } from './shopCategories'

@@ -2,6 +2,7 @@ export type {
   Product,
   ProductBadge,
   ProductCategorySlug,
+  ProductStyleCategory,
   Category,
   Collection,
   CartItem,
