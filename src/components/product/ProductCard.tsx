@@ -125,6 +125,11 @@ export function ProductCard({
           compareAtPrice={product.compareAtPrice}
           currency={product.currency}
         />
+        {product.condition ? (
+          <p className="text-[0.7rem] tracking-wide text-muted">
+            Condition: {product.condition}
+          </p>
+        ) : null}
         {!product.inStock ? (
           <p className="editorial-label text-muted">Sold out</p>
         ) : null}

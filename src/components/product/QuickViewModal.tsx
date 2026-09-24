@@ -134,6 +134,15 @@ export function QuickViewModal({
                   </p>
                 ) : null}
 
+                {product.condition ? (
+                  <p className="mt-4 text-small text-ink-secondary">
+                    <span className="editorial-label mr-2 text-muted">
+                      Condition
+                    </span>
+                    {product.condition}
+                  </p>
+                ) : null}
+
                 {product.sizes && product.sizes.length > 0 ? (
                   <fieldset className="mt-7">
                     <legend className="editorial-label mb-3 text-ink">

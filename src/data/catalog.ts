@@ -175,6 +175,134 @@ export const products: Product[] = [
     isNew: true,
     createdAt: '2026-09-11T10:00:00.000Z',
   },
+  {
+    id: 'thrift_blazer',
+    name: 'Vintage Burgundy Blazer',
+    slug: 'vintage-burgundy-blazer',
+    category: 'thrift',
+    styleCategory: 'Thrift',
+    collection: 'thrift-edit',
+    price: 164,
+    currency: 'USD',
+    image: '/images/thrift-blazer.jpg',
+    images: ['/images/thrift-blazer.jpg', '/images/product-blazer-alt.jpg'],
+    badge: 'ONE OF ONE',
+    condition: 'Excellent',
+    description:
+      'A structured burgundy blazer with original lining and soft shoulder — selected for its cut and lasting character.',
+    sizes: ['M'],
+    colors: ['Burgundy'],
+    tags: ['thrift', 'blazer', 'one-of-one'],
+    inStock: true,
+    isFeatured: true,
+    createdAt: '2026-08-20T10:00:00.000Z',
+  },
+  {
+    id: 'thrift_dress',
+    name: 'Silk Print Midi Dress',
+    slug: 'silk-print-midi-dress',
+    category: 'thrift',
+    styleCategory: 'Thrift',
+    collection: 'thrift-edit',
+    price: 148,
+    currency: 'USD',
+    image: '/images/thrift-dress.jpg',
+    images: ['/images/thrift-dress.jpg', '/images/product-luna-alt.jpg'],
+    badge: 'CURATED FIND',
+    condition: 'Very Good',
+    description:
+      'A fluid silk midi with an archival print — one-of-a-kind movement for evenings and elevated days.',
+    sizes: ['S'],
+    colors: ['Multi'],
+    tags: ['thrift', 'dress', 'silk'],
+    inStock: true,
+    createdAt: '2026-08-18T10:00:00.000Z',
+  },
+  {
+    id: 'thrift_denim',
+    name: 'Classic Denim Jacket',
+    slug: 'classic-denim-jacket',
+    category: 'thrift',
+    styleCategory: 'Thrift',
+    collection: 'thrift-edit',
+    price: 118,
+    currency: 'USD',
+    image: '/images/thrift-denim.jpg',
+    images: ['/images/thrift-denim.jpg', '/images/product-avery-alt.jpg'],
+    badge: 'PRE-LOVED',
+    condition: 'Excellent',
+    description:
+      'A broken-in denim jacket with soft fade and clean hardware — the layer that finishes every look.',
+    sizes: ['M', 'L'],
+    colors: ['Indigo'],
+    tags: ['thrift', 'denim', 'jacket'],
+    inStock: true,
+    createdAt: '2026-08-15T10:00:00.000Z',
+  },
+  {
+    id: 'thrift_skirt',
+    name: 'Retro Pleated Skirt',
+    slug: 'retro-pleated-skirt',
+    category: 'thrift',
+    styleCategory: 'Thrift',
+    collection: 'thrift-edit',
+    price: 96,
+    currency: 'USD',
+    image: '/images/thrift-skirt.jpg',
+    images: ['/images/thrift-skirt.jpg', '/images/product-noir-alt.jpg'],
+    badge: 'ONE OF ONE',
+    condition: 'Very Good',
+    description:
+      'Fine pleats with a high waist and soft swing — a vintage silhouette styled for now.',
+    sizes: ['S'],
+    colors: ['Noir'],
+    tags: ['thrift', 'skirt', 'one-of-one'],
+    inStock: true,
+    createdAt: '2026-08-12T10:00:00.000Z',
+  },
+  {
+    id: 'thrift_bag',
+    name: 'Vintage Leather Bag',
+    slug: 'vintage-leather-bag',
+    category: 'thrift',
+    styleCategory: 'Thrift',
+    collection: 'thrift-edit',
+    price: 132,
+    currency: 'USD',
+    image: '/images/thrift-bag.jpg',
+    images: ['/images/thrift-bag.jpg'],
+    badge: 'LIMITED PIECE',
+    condition: 'Good',
+    description:
+      'A compact leather bag with a warm patina — carried character that only time can create.',
+    sizes: ['One Size'],
+    colors: ['Cognac'],
+    tags: ['thrift', 'bag', 'leather'],
+    inStock: true,
+    isFeatured: true,
+    createdAt: '2026-08-10T10:00:00.000Z',
+  },
+  {
+    id: 'thrift_top',
+    name: 'Printed Evening Top',
+    slug: 'printed-evening-top',
+    category: 'thrift',
+    styleCategory: 'Thrift',
+    collection: 'thrift-edit',
+    price: 88,
+    currency: 'USD',
+    image: '/images/thrift-top.jpg',
+    images: ['/images/thrift-top.jpg', '/images/product-mia-alt.jpg'],
+    badge: 'CURATED FIND',
+    condition: 'Excellent',
+    description:
+      'A printed evening top with a refined neckline — pair with black trousers or a satin skirt.',
+    sizes: ['XS', 'S'],
+    colors: ['Print'],
+    tags: ['thrift', 'top', 'evening'],
+    inStock: true,
+    createdAt: '2026-08-08T10:00:00.000Z',
+  },
 ]
 
 export const categories: Category[] = [
@@ -222,7 +350,16 @@ export const collections: Collection[] = [
     slug: 'new-arrivals',
     description: 'The latest pieces selected for your wardrobe.',
     image: '/images/collection-new.jpg',
-    productIds: products.map((p) => p.id),
+    productIds: products.filter((p) => p.isNew).map((p) => p.id),
+    isFeatured: true,
+  },
+  {
+    id: 'col_thrift',
+    name: 'The Thrift Edit',
+    slug: 'thrift-edit',
+    description: 'One-of-a-kind finds selected for character and quality.',
+    image: '/images/thrift-feature.jpg',
+    productIds: products.filter((p) => p.category === 'thrift').map((p) => p.id),
     isFeatured: true,
   },
 ]
@@ -256,6 +393,15 @@ export function getFeaturedProducts(): Product[] {
 export function getNewArrivals(): Product[] {
   return products
     .filter((product) => product.isNew)
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )
+}
+
+export function getThriftProducts(): Product[] {
+  return products
+    .filter((product) => product.category === 'thrift')
     .sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),

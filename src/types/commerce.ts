@@ -6,6 +6,10 @@ export type ProductBadge =
   | 'Limited'
   | 'Statement'
   | 'Seasonal'
+  | 'ONE OF ONE'
+  | 'CURATED FIND'
+  | 'PRE-LOVED'
+  | 'LIMITED PIECE'
 
 export type ProductCategorySlug =
   | 'new'
@@ -36,6 +40,7 @@ export type Product = {
   images?: string[]
   badge?: ProductBadge
   description?: string
+  condition?: string
   sizes?: string[]
   colors?: string[]
   tags?: string[]
