@@ -2,6 +2,7 @@ import { Suspense, type ReactNode } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router'
 import { SiteFooter } from './SiteFooter'
 import { SiteHeader } from './SiteHeader'
+import { Toaster } from './Toaster'
 import { cn } from '@/lib/cn'
 import { useInternalLinkNavigation } from '@/hooks/useInternalLinkNavigation'
 
@@ -25,6 +26,7 @@ export function RootLayout({ children, className }: RootLayoutProps) {
         )}
       </main>
       <SiteFooter />
+      <Toaster />
       <ScrollRestoration />
     </div>
   )

@@ -23,3 +23,11 @@ export { lookbookContent, lookbookLooks } from './lookbook'
 export type { LookbookLook } from './lookbook'
 export { brandStory, aboutPage } from './brandStory'
 export type { BrandPrinciple, AboutChapter } from './brandStory'
+export {
+  sizeConversions,
+  measuringSteps,
+  sizeGuideNotes,
+  faqItems,
+  pendingPages,
+} from './customerCare'
+export type { SizeRow, MeasureStep, FaqItem, PendingPage } from './customerCare'

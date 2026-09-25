@@ -30,6 +30,15 @@ export const CheckoutPage = lazy(() =>
 export const OrderConfirmationPage = lazy(() =>
   import('./OrderConfirmationPage').then((m) => ({ default: m.OrderConfirmationPage })),
 )
+export const SizeGuidePage = lazy(() =>
+  import('./SizeGuidePage').then((m) => ({ default: m.SizeGuidePage })),
+)
+export const FaqPage = lazy(() =>
+  import('./FaqPage').then((m) => ({ default: m.FaqPage })),
+)
+export const InfoPendingPage = lazy(() =>
+  import('./InfoPendingPage').then((m) => ({ default: m.InfoPendingPage })),
+)
 export const AccountPage = lazy(() =>
   import('./AccountPage').then((m) => ({ default: m.AccountPage })),
 )

@@ -36,6 +36,8 @@ function sitemap(): Plugin {
         ...products.map(({ slug }) => `/product/${slug}`),
         '/lookbook',
         '/about',
+        '/size-guide',
+        '/faq',
       ]
 
       const urls = paths

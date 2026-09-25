@@ -1,5 +1,5 @@
-import { ArrowRight, Heart, Plus } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { ArrowRight, Heart } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { motion } from 'framer-motion'
 import { Breadcrumbs } from '@/components/layout'
@@ -9,8 +9,14 @@ import {
   ProductPrice,
   SizeSelector,
 } from '@/components/product'
-import { Button, Container } from '@/components/ui'
-import { getProductBySlug, getRelatedProducts, getShopListing, shopListings } from '@/data'
+import { Button, Container, Disclosure } from '@/components/ui'
+import {
+  getProductById,
+  getProductBySlug,
+  getRelatedProducts,
+  getShopListing,
+  shopListings,
+} from '@/data'
 import { openBagDrawer } from '@/hooks/useBagDrawer'
 import { useCart } from '@/hooks/useCart'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
@@ -19,10 +25,12 @@ import {
   motionDuration,
   usePrefersReducedMotion,
 } from '@/hooks/usePrefersReducedMotion'
+import { recordProductView, useRecentlyViewed } from '@/hooks/useRecentlyViewed'
 import { useWishlist } from '@/hooks/useWishlist'
 import { cn } from '@/lib/cn'
 import { ROUTES, SITE } from '@/lib/constants'
 import { formatPrice } from '@/lib/format'
+import { productJsonLd } from '@/lib/structuredData'
 import type { Product } from '@/types/commerce'
 import { NotFoundPage } from './NotFoundPage'
 
@@ -34,43 +42,29 @@ export function ProductPage() {
   return <ProductDetail key={product.id} product={product} />
 }
 
-function Disclosure({
-  title,
-  defaultOpen = false,
-  children,
-}: {
-  title: string
-  defaultOpen?: boolean
-  children: ReactNode
-}) {
-  return (
-    <details className="group border-b border-border" open={defaultOpen}>
-      <summary className="editorial-label flex min-h-14 cursor-pointer list-none items-center justify-between text-ink [&::-webkit-details-marker]:hidden">
-        {title}
-        <Plus
-          size={14}
-          strokeWidth={1.5}
-          aria-hidden
-          className="transition-transform duration-300 group-open:rotate-45"
-        />
-      </summary>
-      <div className="pb-6 text-small leading-relaxed text-muted">{children}</div>
-    </details>
-  )
-}
-
 function ProductDetail({ product }: { product: Product }) {
   useDocumentTitle(product.name, product.description)
 
   const reduced = usePrefersReducedMotion()
   const { addItem } = useCart()
   const { has, toggle } = useWishlist()
+  const recentIds = useRecentlyViewed()
   const [size, setSize] = useState(product.sizes?.length === 1 ? product.sizes[0] : '')
   const [color, setColor] = useState(product.colors?.[0] ?? '')
   const [sizeError, setSizeError] = useState(false)
 
+  useEffect(() => {
+    recordProductView(product.id)
+  }, [product.id])
+
   const wishlisted = has(product.id)
   const related = getRelatedProducts(product)
+  const shownIds = new Set([product.id, ...related.map((item) => item.id)])
+  const recentlyViewed = recentIds
+    .filter((id) => !shownIds.has(id))
+    .map((id) => getProductById(id))
+    .filter((item): item is Product => Boolean(item))
+    .slice(0, 4)
   const listing =
     product.category === 'thrift'
       ? getShopListing('thrift')
@@ -284,6 +278,25 @@ function ProductDetail({ product }: { product: Product }) {
           </Container>
         </section>
       ) : null}
+
+      {recentlyViewed.length > 0 ? (
+        <section aria-labelledby="recent-heading" className="border-t border-border bg-canvas">
+          <Container size="wide" className="py-[var(--spacing-section)]">
+            <div className="mb-10 md:mb-14">
+              <p className="editorial-label mb-3 text-burgundy">Your History</p>
+              <h2 id="recent-heading" className="font-display text-h2 text-balance">
+                Recently Viewed
+              </h2>
+            </div>
+            <ProductGrid products={recentlyViewed} />
+          </Container>
+        </section>
+      ) : null}
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: productJsonLd(product) }}
+      />
     </>
   )
 }

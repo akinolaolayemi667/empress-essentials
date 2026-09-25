@@ -1,4 +1,7 @@
 import { useCallback, useSyncExternalStore } from 'react'
+import { getProductById } from '@/data'
+import { showToast } from '@/hooks/useToast'
+import { ROUTES } from '@/lib/constants'
 import type { Wishlist } from '@/types/commerce'
 
 const STORAGE_KEY = 'empress:wishlist'
@@ -45,6 +48,24 @@ function getServerSnapshot() {
   return emptyWishlist
 }
 
+function addToWishlist(productId: string) {
+  if (wishlistSnapshot.items.some((item) => item.productId === productId)) return
+  writeWishlist({
+    items: [
+      ...wishlistSnapshot.items,
+      { id: `wish_${crypto.randomUUID()}`, productId, addedAt: new Date().toISOString() },
+    ],
+    updatedAt: new Date().toISOString(),
+  })
+}
+
+function removeFromWishlist(productId: string) {
+  writeWishlist({
+    items: wishlistSnapshot.items.filter((item) => item.productId !== productId),
+    updatedAt: new Date().toISOString(),
+  })
+}
+
 /** Foundation wishlist hook — localStorage-backed, ready for Phase 2 UI */
 export function useWishlist() {
   const wishlist = useSyncExternalStore(
@@ -61,27 +82,24 @@ export function useWishlist() {
 
   const toggle = useCallback(
     (productId: string) => {
+      const name = getProductById(productId)?.name ?? 'Piece'
+
       if (has(productId)) {
-        writeWishlist({
-          items: wishlist.items.filter((item) => item.productId !== productId),
-          updatedAt: new Date().toISOString(),
+        removeFromWishlist(productId)
+        showToast(`${name} removed from your wishlist.`, {
+          label: 'Undo',
+          onClick: () => addToWishlist(productId),
         })
         return
       }
 
-      writeWishlist({
-        items: [
-          ...wishlist.items,
-          {
-            id: `wish_${crypto.randomUUID()}`,
-            productId,
-            addedAt: new Date().toISOString(),
-          },
-        ],
-        updatedAt: new Date().toISOString(),
+      addToWishlist(productId)
+      showToast(`${name} saved to your wishlist.`, {
+        label: 'View',
+        href: ROUTES.wishlist,
       })
     },
-    [has, wishlist.items],
+    [has],
   )
 
   const clear = useCallback(() => {
