@@ -9,3 +9,4 @@ export {
 export { useEscapeKey } from './useEscapeKey'
 export { useBodyScrollLock } from './useBodyScrollLock'
 export { useScrolled } from './useScrolled'
+export { useBagDrawer, openBagDrawer, closeBagDrawer } from './useBagDrawer'

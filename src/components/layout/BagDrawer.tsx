@@ -1,4 +1,4 @@
-import { X } from 'lucide-react'
+import { Minus, Plus, X } from 'lucide-react'
 import { useEffect, useId, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Button } from '@/components/ui'
@@ -8,6 +8,7 @@ import { useEscapeKey } from '@/hooks/useEscapeKey'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { getProductById } from '@/data'
 import { formatPrice } from '@/lib/format'
+import { ROUTES, SITE } from '@/lib/constants'
 
 type BagDrawerProps = {
   open: boolean
@@ -17,7 +18,7 @@ type BagDrawerProps = {
 export function BagDrawer({ open, onClose }: BagDrawerProps) {
   const titleId = useId()
   const closeRef = useRef<HTMLButtonElement>(null)
-  const { items, itemCount } = useCart()
+  const { items, itemCount, updateQuantity, removeItem } = useCart()
   const reduced = usePrefersReducedMotion()
 
   useBodyScrollLock(open)
@@ -27,6 +28,22 @@ export function BagDrawer({ open, onClose }: BagDrawerProps) {
     if (open) closeRef.current?.focus()
   }, [open])
 
+  const lines = items
+    .map((item) => ({ item, product: getProductById(item.productId) }))
+    .filter(
+      (line): line is { item: typeof line.item; product: NonNullable<typeof line.product> } =>
+        Boolean(line.product),
+    )
+
+  const subtotal = lines.reduce(
+    (sum, { item, product }) => sum + product.price * item.quantity,
+    0,
+  )
+  const currency = lines[0]?.product.currency ?? 'USD'
+  const threshold = SITE.freeShippingThreshold
+  const remaining = Math.max(0, threshold - subtotal)
+  const progress = Math.min(100, (subtotal / threshold) * 100)
+
   return (
     <AnimatePresence>
       {open ? (
@@ -34,6 +51,7 @@ export function BagDrawer({ open, onClose }: BagDrawerProps) {
           <motion.button
             type="button"
             aria-label="Close bag"
+            tabIndex={-1}
             className="fixed inset-0 z-[70] bg-ink/35 backdrop-blur-[2px]"
             initial={reduced ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -70,62 +88,136 @@ export function BagDrawer({ open, onClose }: BagDrawerProps) {
               </button>
             </header>
 
-            <div className="flex flex-1 flex-col overflow-y-auto px-6 py-8">
-              {items.length === 0 ? (
-                <div className="flex flex-1 flex-col items-start justify-center">
-                  <p className="font-display text-2xl text-ink">
-                    Your bag is currently empty.
+            {lines.length === 0 ? (
+              <div className="flex flex-1 flex-col items-start justify-center px-6 py-8">
+                <p className="font-display text-2xl text-ink">
+                  Your bag is currently empty.
+                </p>
+                <p className="mt-3 max-w-xs text-small text-muted">
+                  Discover new arrivals, thrift finds, and statement pieces
+                  when you are ready.
+                </p>
+                <Button type="button" className="mt-8" onClick={onClose}>
+                  Continue Shopping
+                </Button>
+              </div>
+            ) : (
+              <>
+                <div className="border-b border-border px-6 py-4">
+                  <p className="text-small text-ink-secondary" aria-live="polite">
+                    {remaining > 0
+                      ? `You're ${formatPrice(remaining, currency)} away from free shipping.`
+                      : 'You qualify for free shipping.'}
                   </p>
-                  <p className="mt-3 max-w-xs text-small text-muted">
-                    Discover new arrivals, thrift finds, and statement pieces
-                    when you are ready.
+                  <div
+                    className="mt-2.5 h-px w-full bg-border"
+                    role="progressbar"
+                    aria-label="Progress to free shipping"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={Math.round(progress)}
+                  >
+                    <div
+                      className="h-px bg-burgundy transition-[width] duration-500"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </div>
+
+                <ul className="flex-1 overflow-y-auto px-6 py-6">
+                  {lines.map(({ item, product }) => (
+                    <li
+                      key={item.id}
+                      className="flex gap-4 border-b border-border py-5 first:pt-0"
+                    >
+                      <div className="h-28 w-[5.5rem] shrink-0 overflow-hidden bg-soft">
+                        <img
+                          src={product.image}
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+
+                      <div className="flex min-w-0 flex-1 flex-col">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="font-display text-lg leading-snug text-ink">
+                              {product.name}
+                            </p>
+                            {item.size || item.color ? (
+                              <p className="mt-1 text-small text-muted">
+                                {[item.size, item.color].filter(Boolean).join(' / ')}
+                              </p>
+                            ) : null}
+                          </div>
+                          <p className="shrink-0 text-small tabular-nums text-ink">
+                            {formatPrice(product.price * item.quantity, product.currency)}
+                          </p>
+                        </div>
+
+                        <div className="mt-auto flex items-center justify-between pt-3">
+                          <div className="inline-flex items-center border border-border">
+                            <button
+                              type="button"
+                              aria-label={`Decrease quantity of ${product.name}`}
+                              className="flex h-9 w-9 items-center justify-center text-ink disabled:opacity-30"
+                              disabled={item.quantity <= 1}
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            >
+                              <Minus size={13} strokeWidth={1.5} />
+                            </button>
+                            <span
+                              className="min-w-8 text-center text-small tabular-nums"
+                              aria-label={`Quantity ${item.quantity}`}
+                            >
+                              {item.quantity}
+                            </span>
+                            <button
+                              type="button"
+                              aria-label={`Increase quantity of ${product.name}`}
+                              className="flex h-9 w-9 items-center justify-center text-ink"
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            >
+                              <Plus size={13} strokeWidth={1.5} />
+                            </button>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => removeItem(item.id)}
+                            className="text-[0.75rem] text-muted underline underline-offset-4 transition-colors hover:text-burgundy"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+
+                <footer className="border-t border-border px-6 py-6">
+                  <div className="flex items-baseline justify-between">
+                    <p className="editorial-label text-ink">Subtotal</p>
+                    <p className="font-display text-xl tabular-nums text-ink">
+                      {formatPrice(subtotal, currency)}
+                    </p>
+                  </div>
+                  <p className="mt-1.5 text-[0.75rem] text-muted">
+                    Shipping and taxes calculated at checkout.
                   </p>
-                  <Button
+                  <Button href={ROUTES.checkout} fullWidth className="mt-5">
+                    Checkout
+                  </Button>
+                  <button
                     type="button"
-                    variant="primary"
-                    className="mt-8"
                     onClick={onClose}
+                    className="editorial-label mt-4 w-full text-center text-muted transition-colors hover:text-ink"
                   >
                     Continue Shopping
-                  </Button>
-                </div>
-              ) : (
-                <ul className="flex flex-col gap-6">
-                  {items.map((item) => {
-                    const product = getProductById(item.productId)
-                    if (!product) return null
-                    return (
-                      <li
-                        key={item.id}
-                        className="flex gap-4 border-b border-border pb-6"
-                      >
-                        <div className="h-24 w-20 shrink-0 overflow-hidden bg-soft">
-                          <img
-                            src={product.image}
-                            alt=""
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="font-display text-lg leading-snug">
-                            {product.name}
-                          </p>
-                          {(item.size || item.color) && (
-                            <p className="mt-1 text-small text-muted">
-                              {[item.size, item.color].filter(Boolean).join(' / ')}
-                            </p>
-                          )}
-                          <p className="mt-2 text-small tabular-nums">
-                            {formatPrice(product.price, product.currency)} ×{' '}
-                            {item.quantity}
-                          </p>
-                        </div>
-                      </li>
-                    )
-                  })}
-                </ul>
-              )}
-            </div>
+                  </button>
+                </footer>
+              </>
+            )}
           </motion.aside>
         </>
       ) : null}

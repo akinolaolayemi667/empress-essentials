@@ -1,5 +1,6 @@
 export { RootLayout } from './RootLayout'
 export { SiteHeader } from './SiteHeader'
+export { SiteFooter } from './SiteFooter'
 export { AnnouncementBar } from './AnnouncementBar'
 export { Logo } from './Logo'
 export { SearchOverlay } from './SearchOverlay'

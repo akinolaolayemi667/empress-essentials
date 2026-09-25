@@ -8,6 +8,7 @@ import { SearchOverlay } from './SearchOverlay'
 import { Container } from '@/components/ui'
 import { DESKTOP_NAV_LINKS, ROUTES } from '@/lib/constants'
 import { cn } from '@/lib/cn'
+import { useBagDrawer } from '@/hooks/useBagDrawer'
 import { useCart } from '@/hooks/useCart'
 import { useWishlist } from '@/hooks/useWishlist'
 import { useScrolled } from '@/hooks/useScrolled'
@@ -54,27 +55,27 @@ export function SiteHeader() {
   const scrolled = useScrolled(8)
   const { itemCount } = useCart()
   const { count: wishlistCount } = useWishlist()
+  const { open: bagOpen, openBag: showBag, closeBag } = useBagDrawer()
   const [searchOpen, setSearchOpen] = useState(false)
-  const [bagOpen, setBagOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const openSearch = useCallback(() => {
-    setBagOpen(false)
+    closeBag()
     setMobileOpen(false)
     setSearchOpen(true)
-  }, [])
+  }, [closeBag])
 
   const openBag = useCallback(() => {
     setSearchOpen(false)
     setMobileOpen(false)
-    setBagOpen(true)
-  }, [])
+    showBag()
+  }, [showBag])
 
   const openMobile = useCallback(() => {
     setSearchOpen(false)
-    setBagOpen(false)
+    closeBag()
     setMobileOpen(true)
-  }, [])
+  }, [closeBag])
 
   return (
     <>
@@ -154,7 +155,7 @@ export function SiteHeader() {
       </div>
 
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
-      <BagDrawer open={bagOpen} onClose={() => setBagOpen(false)} />
+      <BagDrawer open={bagOpen} onClose={closeBag} />
       <MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} />
     </>
   )

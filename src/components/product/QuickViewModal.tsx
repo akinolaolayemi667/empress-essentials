@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Button, FashionImage } from '@/components/ui'
 import { ProductPrice } from '@/components/product/ProductPrice'
 import { useCart } from '@/hooks/useCart'
+import { openBagDrawer } from '@/hooks/useBagDrawer'
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock'
 import { useEscapeKey } from '@/hooks/useEscapeKey'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
@@ -22,7 +23,7 @@ export function QuickViewModal({
   product,
   open,
   onClose,
-  onAddedToBag,
+  onAddedToBag = openBagDrawer,
 }: QuickViewModalProps) {
   const titleId = useId()
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -57,8 +58,8 @@ export function QuickViewModal({
       quantity,
       size: size || undefined,
     })
-    onAddedToBag?.()
     onClose()
+    onAddedToBag()
   }
 
   return (

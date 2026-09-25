@@ -7,6 +7,7 @@ export const SITE = {
     'Luxury new and thrift clothing, statement pieces, and seasonal collections.',
   url: 'https://empress-essentials.vercel.app',
   announcement: 'Free shipping on orders over $100',
+  freeShippingThreshold: 100,
 } as const
 
 export const ROUTES = {
@@ -23,6 +24,12 @@ export const ROUTES = {
   wishlist: '/wishlist',
   account: '/account',
   search: '/search',
+  checkout: '/checkout',
+  shipping: '/shipping-returns',
+  sizeGuide: '/size-guide',
+  faq: '/faq',
+  privacy: '/privacy',
+  terms: '/terms',
 } as const
 
 export type NavLink = {
@@ -47,6 +54,46 @@ export const MOBILE_NAV_LINKS: NavLink[] = [
   { label: 'Lookbook', href: ROUTES.lookbook },
   { label: 'About', href: ROUTES.about },
   { label: 'Contact', href: ROUTES.contact },
+]
+
+export type FooterColumn = {
+  title: string
+  links: NavLink[]
+}
+
+export const FOOTER_COLUMNS: FooterColumn[] = [
+  {
+    title: 'Shop',
+    links: [
+      { label: 'New Arrivals', href: ROUTES.newArrivals },
+      { label: 'Collections', href: ROUTES.collections },
+      { label: 'Thrift Edit', href: ROUTES.thrift },
+      { label: 'Statement Pieces', href: `${ROUTES.shop}/statement` },
+    ],
+  },
+  {
+    title: 'Customer Care',
+    links: [
+      { label: 'Contact', href: ROUTES.contact },
+      { label: 'Shipping & Returns', href: ROUTES.shipping },
+      { label: 'Size Guide', href: ROUTES.sizeGuide },
+      { label: 'FAQ', href: ROUTES.faq },
+    ],
+  },
+  {
+    title: 'Empress',
+    links: [
+      { label: 'Our Story', href: ROUTES.about },
+      { label: 'Lookbook', href: ROUTES.lookbook },
+      { label: 'Wishlist', href: ROUTES.wishlist },
+      { label: 'Account', href: ROUTES.account },
+    ],
+  },
+]
+
+export const LEGAL_LINKS: NavLink[] = [
+  { label: 'Privacy Policy', href: ROUTES.privacy },
+  { label: 'Terms of Service', href: ROUTES.terms },
 ]
 
 export const SEARCH_SUGGESTIONS: NavLink[] = [

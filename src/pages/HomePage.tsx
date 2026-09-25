@@ -5,6 +5,7 @@ import {
   Hero,
   Lookbook,
   NewArrivals,
+  Newsletter,
   ShopByCategory,
   ThriftCollection,
 } from '@/components/sections'
@@ -19,6 +20,7 @@ export function HomePage() {
       <Lookbook />
       <ThriftCollection />
       <BrandStory />
+      <Newsletter />
     </RootLayout>
   )
 }

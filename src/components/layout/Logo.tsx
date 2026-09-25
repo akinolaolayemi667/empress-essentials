@@ -6,6 +6,7 @@ type LogoProps = {
   stacked?: boolean
   href?: string
   onClick?: () => void
+  tone?: 'dark' | 'light'
 }
 
 export function Logo({
@@ -13,13 +14,15 @@ export function Logo({
   stacked = false,
   href = ROUTES.home,
   onClick,
+  tone = 'dark',
 }: LogoProps) {
   return (
     <a
       href={href}
       onClick={onClick}
       className={cn(
-        'font-display font-medium tracking-[-0.02em] text-ink transition-opacity duration-300 hover:opacity-70',
+        'font-display font-medium tracking-[-0.02em] transition-opacity duration-300 hover:opacity-70',
+        tone === 'dark' ? 'text-ink' : 'text-canvas',
         className,
       )}
       aria-label={SITE.name}
