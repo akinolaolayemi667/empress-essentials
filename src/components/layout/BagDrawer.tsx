@@ -6,9 +6,9 @@ import { useCart } from '@/hooks/useCart'
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock'
 import { useEscapeKey } from '@/hooks/useEscapeKey'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
-import { getProductById } from '@/data'
+import { resolveBagLines, summarizeBag } from '@/lib/bag'
 import { formatPrice } from '@/lib/format'
-import { ROUTES, SITE } from '@/lib/constants'
+import { ROUTES } from '@/lib/constants'
 
 type BagDrawerProps = {
   open: boolean
@@ -28,21 +28,8 @@ export function BagDrawer({ open, onClose }: BagDrawerProps) {
     if (open) closeRef.current?.focus()
   }, [open])
 
-  const lines = items
-    .map((item) => ({ item, product: getProductById(item.productId) }))
-    .filter(
-      (line): line is { item: typeof line.item; product: NonNullable<typeof line.product> } =>
-        Boolean(line.product),
-    )
-
-  const subtotal = lines.reduce(
-    (sum, { item, product }) => sum + product.price * item.quantity,
-    0,
-  )
-  const currency = lines[0]?.product.currency ?? 'USD'
-  const threshold = SITE.freeShippingThreshold
-  const remaining = Math.max(0, threshold - subtotal)
-  const progress = Math.min(100, (subtotal / threshold) * 100)
+  const lines = resolveBagLines(items)
+  const { subtotal, currency, remaining, progress } = summarizeBag(lines)
 
   return (
     <AnimatePresence>

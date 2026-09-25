@@ -133,6 +133,41 @@ export type NewsletterSubscriber = {
   source?: string
 }
 
+export type CheckoutDetails = {
+  email: string
+  marketingOptIn: boolean
+  firstName: string
+  lastName: string
+  address: string
+  apartment: string
+  city: string
+  region: string
+  postalCode: string
+  country: string
+  phone: string
+}
+
+export type OrderLine = {
+  productId: string
+  name: string
+  slug: string
+  image: string
+  price: number
+  quantity: number
+  size?: string
+  color?: string
+}
+
+export type Order = {
+  reference: string
+  placedAt: string
+  details: CheckoutDetails
+  lines: OrderLine[]
+  subtotal: number
+  currency: Product['currency']
+  freeShipping: boolean
+}
+
 export type SearchResult = {
   products: Product[]
   categories: Category[]
