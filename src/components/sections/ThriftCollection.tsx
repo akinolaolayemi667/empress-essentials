@@ -76,7 +76,7 @@ export function ThriftCollection() {
             <ImageReveal>
               <FashionImage
                 src="/images/thrift-feature.jpg"
-                alt="Curated thrift fashion editorial"
+                alt="Woman in a vintage stone trench seated on steps before a green door"
                 aspect="editorial"
                 className="min-h-[22rem] w-full lg:min-h-[40rem]"
               />

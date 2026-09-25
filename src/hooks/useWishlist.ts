@@ -21,7 +21,11 @@ function readWishlist(): Wishlist {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return emptyWishlist
-    return JSON.parse(raw) as Wishlist
+    const stored = JSON.parse(raw) as Wishlist
+    return {
+      ...stored,
+      items: stored.items.filter((item) => getProductById(item.productId)),
+    }
   } catch {
     return emptyWishlist
   }

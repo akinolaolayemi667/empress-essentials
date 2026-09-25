@@ -74,7 +74,7 @@ export const shopListings: ShopListing[] = [
     label: 'Category',
     title: 'Sets',
     description: 'Effortless looks designed to work together.',
-    emptyMessage: 'Our first coordinated sets are being curated.',
+    emptyMessage: 'New coordinated sets arrive soon.',
     matches: (product) =>
       product.styleCategory === 'Sets' || hasTag(product, 'set'),
   },

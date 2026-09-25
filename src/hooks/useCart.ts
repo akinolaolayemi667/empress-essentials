@@ -1,4 +1,5 @@
 import { useCallback, useSyncExternalStore } from 'react'
+import { getProductById } from '@/data'
 import type { Cart, CartItem } from '@/types/commerce'
 
 const STORAGE_KEY = 'empress:cart'
@@ -18,7 +19,11 @@ function readCart(): Cart {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return emptyCart
-    return JSON.parse(raw) as Cart
+    const stored = JSON.parse(raw) as Cart
+    return {
+      ...stored,
+      items: stored.items.filter((item) => getProductById(item.productId)),
+    }
   } catch {
     return emptyCart
   }

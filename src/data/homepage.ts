@@ -4,23 +4,23 @@ import { ROUTES } from '@/lib/constants'
 export const homepageMedia = {
   heroPrimary: {
     src: '/images/hero-primary.jpg',
-    alt: 'Editorial fashion portrait in soft natural light',
+    alt: 'Woman in a camel coat and felt hat beneath stone arches',
   },
   heroSecondary: {
     src: '/images/hero-secondary.jpg',
-    alt: 'Detail of curated fashion styling',
+    alt: 'Close detail of a camel wool coat cuff and gold bangle',
   },
   collectionNew: {
     src: '/images/collection-new.jpg',
-    alt: 'New arrivals look — clean contemporary styling',
+    alt: 'Woman in a belted camel trench by an autumn lake',
   },
   collectionThrift: {
     src: '/images/collection-thrift.jpg',
-    alt: 'Thrift edit — expressive vintage-inspired layers',
+    alt: 'Woman in a vintage check blazer and black felt hat',
   },
   collectionStatement: {
     src: '/images/collection-statement.jpg',
-    alt: 'Statement piece — dramatic fashion-forward silhouette',
+    alt: 'Woman in an ivory tailored blazer with a single red rose',
   },
 } as const
 
