@@ -1,5 +1,6 @@
 import { Heart, Menu, Search, ShoppingBag, User } from 'lucide-react'
-import { useCallback, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useLocation } from 'react-router'
 import { AnnouncementBar } from './AnnouncementBar'
 import { BagDrawer } from './BagDrawer'
 import { Logo } from './Logo'
@@ -56,26 +57,37 @@ export function SiteHeader() {
   const { itemCount } = useCart()
   const { count: wishlistCount } = useWishlist()
   const { open: bagOpen, openBag: showBag, closeBag } = useBagDrawer()
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const { pathname } = useLocation()
+  // Overlays remember the path they opened on, so navigating closes them
+  const [searchPath, setSearchPath] = useState<string | null>(null)
+  const [mobilePath, setMobilePath] = useState<string | null>(null)
+  const searchOpen = searchPath === pathname
+  const mobileOpen = mobilePath === pathname
+
+  useEffect(() => {
+    closeBag()
+  }, [pathname, closeBag])
+
+  const isActive = (href: string) =>
+    pathname === href || (href !== ROUTES.shop && pathname.startsWith(`${href}/`))
 
   const openSearch = useCallback(() => {
     closeBag()
-    setMobileOpen(false)
-    setSearchOpen(true)
-  }, [closeBag])
+    setMobilePath(null)
+    setSearchPath(pathname)
+  }, [closeBag, pathname])
 
   const openBag = useCallback(() => {
-    setSearchOpen(false)
-    setMobileOpen(false)
+    setSearchPath(null)
+    setMobilePath(null)
     showBag()
   }, [showBag])
 
   const openMobile = useCallback(() => {
-    setSearchOpen(false)
+    setSearchPath(null)
     closeBag()
-    setMobileOpen(true)
-  }, [closeBag])
+    setMobilePath(pathname)
+  }, [closeBag, pathname])
 
   return (
     <>
@@ -105,7 +117,11 @@ export function SiteHeader() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="editorial-label whitespace-nowrap text-[0.65rem] text-ink-secondary transition-colors duration-300 hover:text-burgundy xl:text-caption"
+                  aria-current={isActive(link.href) ? 'page' : undefined}
+                  className={cn(
+                    'editorial-label whitespace-nowrap text-[0.65rem] transition-colors duration-300 hover:text-burgundy xl:text-caption',
+                    isActive(link.href) ? 'text-burgundy' : 'text-ink-secondary',
+                  )}
                 >
                   {link.label}
                 </a>
@@ -154,9 +170,9 @@ export function SiteHeader() {
         </header>
       </div>
 
-      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <SearchOverlay open={searchOpen} onClose={() => setSearchPath(null)} />
       <BagDrawer open={bagOpen} onClose={closeBag} />
-      <MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileNav open={mobileOpen} onClose={() => setMobilePath(null)} />
     </>
   )
 }

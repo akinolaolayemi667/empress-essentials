@@ -9,8 +9,8 @@ import { useBodyScrollLock } from '@/hooks/useBodyScrollLock'
 import { useEscapeKey } from '@/hooks/useEscapeKey'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { ROUTES } from '@/lib/constants'
-import { cn } from '@/lib/cn'
 import type { Product } from '@/types/commerce'
+import { SizeSelector } from './SizeSelector'
 
 type QuickViewModalProps = {
   product: Product | null
@@ -145,38 +145,16 @@ export function QuickViewModal({
                 ) : null}
 
                 {product.sizes && product.sizes.length > 0 ? (
-                  <fieldset className="mt-7">
-                    <legend className="editorial-label mb-3 text-ink">
-                      Size
-                    </legend>
-                    <div className="flex flex-wrap gap-2" role="radiogroup">
-                      {product.sizes.map((option) => (
-                        <button
-                          key={option}
-                          type="button"
-                          role="radio"
-                          aria-checked={size === option}
-                          className={cn(
-                            'min-h-11 min-w-11 border px-3 text-small transition-colors duration-300',
-                            size === option
-                              ? 'border-ink bg-ink text-canvas'
-                              : 'border-border bg-canvas text-ink hover:border-ink',
-                          )}
-                          onClick={() => {
-                            setSize(option)
-                            setSizeError(false)
-                          }}
-                        >
-                          {option}
-                        </button>
-                      ))}
-                    </div>
-                    {sizeError ? (
-                      <p className="mt-2 text-small text-burgundy" role="alert">
-                        Please select a size
-                      </p>
-                    ) : null}
-                  </fieldset>
+                  <SizeSelector
+                    className="mt-7"
+                    sizes={product.sizes}
+                    value={size}
+                    error={sizeError}
+                    onChange={(option) => {
+                      setSize(option)
+                      setSizeError(false)
+                    }}
+                  />
                 ) : null}
 
                 <div className="mt-6">

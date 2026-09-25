@@ -70,7 +70,7 @@ export const shopCategories: ShopCategoryItem[] = [
     description: 'Bold pieces made to stand apart.',
     image: '/images/category-statement.jpg',
     imageAlt: 'Bold statement fashion',
-    href: `${ROUTES.shop}/statement`,
+    href: ROUTES.statement,
     layout: 'standard',
   },
 ]

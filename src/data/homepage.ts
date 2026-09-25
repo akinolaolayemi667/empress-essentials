@@ -68,7 +68,7 @@ export const featuredCollections: FeaturedCollectionItem[] = [
     index: '03',
     title: 'Statement Pieces',
     description: 'Standout pieces designed to make the look unforgettable.',
-    href: `${ROUTES.shop}?category=statement`,
+    href: ROUTES.statement,
     badge: 'FEATURED',
     cta: 'Discover Statement',
     image: homepageMedia.collectionStatement.src,

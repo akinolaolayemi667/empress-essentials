@@ -362,6 +362,17 @@ export const collections: Collection[] = [
     productIds: products.filter((p) => p.category === 'thrift').map((p) => p.id),
     isFeatured: true,
   },
+  {
+    id: 'col_statement',
+    name: 'Statement Pieces',
+    slug: 'statement-pieces',
+    description: 'Standout pieces designed to make the look unforgettable.',
+    image: '/images/collection-statement.jpg',
+    productIds: products
+      .filter((p) => p.category === 'statement' || p.tags?.includes('statement'))
+      .map((p) => p.id),
+    isFeatured: true,
+  },
 ]
 
 export const reviews: Review[] = []
@@ -397,6 +408,16 @@ export function getNewArrivals(): Product[] {
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
+}
+
+/** Same style or collection first, then anything else — never the product itself */
+export function getRelatedProducts(product: Product, limit = 4): Product[] {
+  const others = products.filter((item) => item.id !== product.id)
+  const score = (item: Product) =>
+    (item.styleCategory === product.styleCategory ? 2 : 0) +
+    (item.collection === product.collection ? 1 : 0)
+
+  return [...others].sort((a, b) => score(b) - score(a)).slice(0, limit)
 }
 
 export function getThriftProducts(): Product[] {

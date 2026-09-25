@@ -7,7 +7,10 @@ export {
   getFeaturedProducts,
   getNewArrivals,
   getThriftProducts,
+  getRelatedProducts,
 } from './catalog'
+export { shopAllListing, shopListings, getShopListing } from './shopListings'
+export type { ShopListing } from './shopListings'
 export {
   homepageMedia,
   heroContent,

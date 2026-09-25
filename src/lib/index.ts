@@ -11,6 +11,17 @@ export {
 export type { NavLink, FooterColumn } from './constants'
 export { createFilter, filterProducts, searchCatalog } from './catalog'
 export {
+  PRICE_RANGES,
+  SORT_OPTIONS,
+  parseShopQuery,
+  serializeShopQuery,
+  applyShopQuery,
+  getFacetOptions,
+  countActiveFilters,
+  toggleValue,
+} from './shop'
+export type { PriceRange, ShopQuery } from './shop'
+export {
   isValidEmail,
   createNewsletterSubscriber,
   subscribeToNewsletter,

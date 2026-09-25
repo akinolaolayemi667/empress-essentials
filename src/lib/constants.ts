@@ -16,6 +16,7 @@ export const ROUTES = {
   collections: '/collections',
   newArrivals: '/shop/new',
   thrift: '/shop/thrift',
+  statement: '/shop/statement',
   lookbook: '/lookbook',
   about: '/about',
   contact: '/contact',
@@ -68,7 +69,7 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
       { label: 'New Arrivals', href: ROUTES.newArrivals },
       { label: 'Collections', href: ROUTES.collections },
       { label: 'Thrift Edit', href: ROUTES.thrift },
-      { label: 'Statement Pieces', href: `${ROUTES.shop}/statement` },
+      { label: 'Statement Pieces', href: ROUTES.statement },
     ],
   },
   {
@@ -98,10 +99,10 @@ export const LEGAL_LINKS: NavLink[] = [
 
 export const SEARCH_SUGGESTIONS: NavLink[] = [
   { label: 'New Arrivals', href: ROUTES.newArrivals },
-  { label: 'Dresses', href: `${ROUTES.shop}?category=dresses` },
-  { label: 'Tops', href: `${ROUTES.shop}?category=tops` },
+  { label: 'Dresses', href: `${ROUTES.shop}/dresses` },
+  { label: 'Tops', href: `${ROUTES.shop}/tops` },
   { label: 'Thrift', href: ROUTES.thrift },
-  { label: 'Accessories', href: `${ROUTES.shop}?category=accessories` },
+  { label: 'Statement Pieces', href: ROUTES.statement },
 ]
 
 export const DEFAULT_FILTER: ProductFilter = {

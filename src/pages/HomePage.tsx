@@ -1,4 +1,3 @@
-import { RootLayout } from '@/components/layout'
 import {
   BrandStory,
   FeaturedCollections,
@@ -9,10 +8,13 @@ import {
   ShopByCategory,
   ThriftCollection,
 } from '@/components/sections'
+import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
 export function HomePage() {
+  useDocumentTitle()
+
   return (
-    <RootLayout>
+    <>
       <Hero />
       <FeaturedCollections />
       <NewArrivals />
@@ -21,6 +23,6 @@ export function HomePage() {
       <ThriftCollection />
       <BrandStory />
       <Newsletter />
-    </RootLayout>
+    </>
   )
 }
