@@ -17,6 +17,7 @@ import {
   getShopListing,
   shopListings,
 } from '@/data'
+import { business, deliveryEstimates } from '@/data/business'
 import { openBagDrawer } from '@/hooks/useBagDrawer'
 import { useCart } from '@/hooks/useCart'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
@@ -211,7 +212,7 @@ function ProductDetail({ product }: { product: Product }) {
                 </div>
 
                 <p className="mt-4 text-[0.75rem] text-muted">
-                  Free shipping on orders over{' '}
+                  Free shipping within Nigeria on orders over{' '}
                   {formatPrice(SITE.freeShippingThreshold, product.currency)}.
                 </p>
 
@@ -238,10 +239,14 @@ function ProductDetail({ product }: { product: Product }) {
                     </Disclosure>
                   ) : null}
                   <Disclosure title="Shipping & Returns">
-                    Free shipping on orders over{' '}
+                    Free shipping within Nigeria on orders over{' '}
                     {formatPrice(SITE.freeShippingThreshold, product.currency)}.
-                    Shipping and taxes for other orders are calculated at
-                    checkout.{' '}
+                    Delivery takes {deliveryEstimates[0].time} in Lagos and{' '}
+                    {deliveryEstimates[1].time} elsewhere in Nigeria. International
+                    shipping is quoted per order.{' '}
+                    {product.category === 'thrift'
+                      ? 'Thrift pieces are final sale.'
+                      : `New pieces can be returned within ${business.returnWindowDays} days of delivery, unworn with tags attached.`}{' '}
                     <a
                       href={ROUTES.shipping}
                       className="text-ink underline underline-offset-4 hover:text-burgundy"

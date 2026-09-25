@@ -6,7 +6,7 @@ type OrderSummaryProps = {
   lines: OrderLine[]
   subtotal: number
   currency: Product['currency']
-  freeShipping: boolean
+  shipping: string
   linkProducts?: boolean
 }
 
@@ -14,7 +14,7 @@ export function OrderSummary({
   lines,
   subtotal,
   currency,
-  freeShipping,
+  shipping,
   linkProducts = false,
 }: OrderSummaryProps) {
   return (
@@ -68,13 +68,7 @@ export function OrderSummary({
       <dl className="space-y-3 pt-5 text-small">
         <div className="flex justify-between gap-4">
           <dt className="text-ink-secondary">Shipping</dt>
-          <dd className="text-right text-ink">
-            {freeShipping ? 'Free' : 'Calculated at payment'}
-          </dd>
-        </div>
-        <div className="flex justify-between gap-4">
-          <dt className="text-ink-secondary">Taxes</dt>
-          <dd className="text-right text-ink">Calculated at payment</dd>
+          <dd className="text-right text-ink">{shipping}</dd>
         </div>
         <div className="flex items-baseline justify-between gap-4 border-t border-border pt-4">
           <dt className="editorial-label text-ink">Subtotal</dt>

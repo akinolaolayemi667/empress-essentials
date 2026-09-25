@@ -6,7 +6,7 @@ export const SITE = {
   description:
     'Luxury new and thrift clothing, statement pieces, and seasonal collections.',
   url: 'https://empress-essentials.vercel.app',
-  announcement: 'Free shipping on orders over $100',
+  announcement: 'Free shipping within Nigeria on orders over $100',
   freeShippingThreshold: 100,
 } as const
 

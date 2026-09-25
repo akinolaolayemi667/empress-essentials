@@ -18,6 +18,7 @@ import {
 } from '@/lib/checkout'
 import { ROUTES, SITE } from '@/lib/constants'
 import { formatPrice } from '@/lib/format'
+import { deliveryEstimate, isDomestic, shippingLabel } from '@/lib/shipping'
 
 type Status = 'idle' | 'submitting' | 'error'
 
@@ -54,15 +55,25 @@ export function CheckoutPage() {
   const [formError, setFormError] = useState('')
 
   const lines = resolveBagLines(items)
-  const { subtotal, currency, remaining, freeShipping } = summarizeBag(lines)
+  const { subtotal, currency, remaining, overFreeShippingThreshold } = summarizeBag(lines)
+  const shipping = shippingLabel(subtotal, details.country)
+  const estimate = deliveryEstimate(details)
+  const international = details.country.trim() !== '' && !isDomestic(details.country)
   const summary = (
     <OrderSummary
       lines={toOrderLines(lines)}
       subtotal={subtotal}
       currency={currency}
-      freeShipping={freeShipping}
+      shipping={shipping}
     />
   )
+
+  const threshold = formatPrice(SITE.freeShippingThreshold, currency)
+  const shippingNote = international
+    ? 'International shipping is quoted for your address and confirmed before payment. Customs duties or import taxes set by your country are not included.'
+    : overFreeShippingThreshold
+      ? `Your order qualifies for free shipping within Nigeria on orders over ${threshold}.`
+      : `Add ${formatPrice(remaining, currency)} more for free shipping within Nigeria.`
 
   const update = (name: CheckoutField) => (event: ChangeEvent<HTMLInputElement>) => {
     const { type, checked, value } = event.target
@@ -235,17 +246,22 @@ export function CheckoutPage() {
                 <CheckoutSection number="03" title="Delivery Method">
                   <div className="flex items-start justify-between gap-6 border border-ink px-5 py-5">
                     <div>
-                      <p className="text-body-lg text-ink">Standard delivery</p>
-                      <p className="mt-1 text-small text-muted">
-                        {freeShipping
-                          ? `Your order qualifies for free shipping over ${formatPrice(SITE.freeShippingThreshold, currency)}.`
-                          : `Add ${formatPrice(remaining, currency)} more for free shipping.`}
+                      <p className="text-body-lg text-ink">
+                        {international ? 'International delivery' : 'Standard delivery'}
                       </p>
+                      <p className="mt-1 text-small text-ink-secondary" aria-live="polite">
+                        {estimate ?? 'Enter your address to see the delivery estimate.'}
+                      </p>
+                      <p className="mt-2 text-small text-muted">{shippingNote}</p>
                     </div>
-                    <p className="shrink-0 text-small text-ink">
-                      {freeShipping ? 'Free' : 'Calculated at payment'}
-                    </p>
+                    <p className="shrink-0 text-right text-small text-ink">{shipping}</p>
                   </div>
+                  <a
+                    href={ROUTES.shipping}
+                    className="mt-4 inline-block text-[0.75rem] text-muted underline underline-offset-4 transition-colors hover:text-ink"
+                  >
+                    Shipping &amp; Returns policy
+                  </a>
                 </CheckoutSection>
 
                 <CheckoutSection number="04" title="Payment">
@@ -270,6 +286,17 @@ export function CheckoutPage() {
                 >
                   {status === 'submitting' ? 'Placing Order' : 'Place Order'}
                 </Button>
+                <p className="mt-4 text-center text-[0.75rem] leading-relaxed text-muted">
+                  By placing your order you agree to our{' '}
+                  <a href={ROUTES.terms} className="text-ink underline underline-offset-4 hover:text-burgundy">
+                    Terms of Service
+                  </a>{' '}
+                  and{' '}
+                  <a href={ROUTES.privacy} className="text-ink underline underline-offset-4 hover:text-burgundy">
+                    Privacy Policy
+                  </a>
+                  .
+                </p>
                 <button
                   type="button"
                   onClick={openBagDrawer}

@@ -26,6 +26,6 @@ export function summarizeBag(lines: BagLine[]) {
     currency: lines[0]?.product.currency ?? 'USD',
     remaining: Math.max(0, threshold - subtotal),
     progress: Math.min(100, (subtotal / threshold) * 100),
-    freeShipping: subtotal >= threshold,
+    overFreeShippingThreshold: subtotal >= threshold,
   }
 }

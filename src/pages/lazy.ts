@@ -36,8 +36,11 @@ export const SizeGuidePage = lazy(() =>
 export const FaqPage = lazy(() =>
   import('./FaqPage').then((m) => ({ default: m.FaqPage })),
 )
-export const InfoPendingPage = lazy(() =>
-  import('./InfoPendingPage').then((m) => ({ default: m.InfoPendingPage })),
+export const ContactPage = lazy(() =>
+  import('./ContactPage').then((m) => ({ default: m.ContactPage })),
+)
+export const PolicyPage = lazy(() =>
+  import('./PolicyPage').then((m) => ({ default: m.PolicyPage })),
 )
 export const AccountPage = lazy(() =>
   import('./AccountPage').then((m) => ({ default: m.AccountPage })),

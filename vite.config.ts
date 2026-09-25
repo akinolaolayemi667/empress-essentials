@@ -38,6 +38,10 @@ function sitemap(): Plugin {
         '/about',
         '/size-guide',
         '/faq',
+        '/contact',
+        '/shipping-returns',
+        '/privacy',
+        '/terms',
       ]
 
       const urls = paths

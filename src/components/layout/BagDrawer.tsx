@@ -93,8 +93,8 @@ export function BagDrawer({ open, onClose }: BagDrawerProps) {
                 <div className="border-b border-border px-6 py-4">
                   <p className="text-small text-ink-secondary" aria-live="polite">
                     {remaining > 0
-                      ? `You're ${formatPrice(remaining, currency)} away from free shipping.`
-                      : 'You qualify for free shipping.'}
+                      ? `You're ${formatPrice(remaining, currency)} away from free shipping within Nigeria.`
+                      : 'You qualify for free shipping within Nigeria.'}
                   </p>
                   <div
                     className="mt-2.5 h-px w-full bg-border"
@@ -190,7 +190,7 @@ export function BagDrawer({ open, onClose }: BagDrawerProps) {
                     </p>
                   </div>
                   <p className="mt-1.5 text-[0.75rem] text-muted">
-                    Shipping and taxes calculated at checkout.
+                    Shipping is confirmed at checkout.
                   </p>
                   <Button href={ROUTES.checkout} fullWidth className="mt-5">
                     Checkout

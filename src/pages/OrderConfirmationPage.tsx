@@ -11,6 +11,7 @@ import {
 import { getOrder } from '@/lib/checkout'
 import { ROUTES } from '@/lib/constants'
 import { formatDate } from '@/lib/format'
+import { SHIPPING_CONFIRMED_LABEL } from '@/lib/shipping'
 import type { Order } from '@/types/commerce'
 import { NotFoundPage } from './NotFoundPage'
 
@@ -94,7 +95,7 @@ function OrderConfirmation({ order }: { order: Order }) {
               lines={order.lines}
               subtotal={order.subtotal}
               currency={order.currency}
-              freeShipping={order.freeShipping}
+              shipping={order.freeShipping ? 'Free' : SHIPPING_CONFIRMED_LABEL}
               linkProducts
             />
           </div>

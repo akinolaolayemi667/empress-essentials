@@ -1,6 +1,7 @@
 import type { BagLine } from '@/lib/bag'
 import { summarizeBag } from '@/lib/bag'
 import { isValidEmail } from '@/lib/newsletter'
+import { qualifiesForFreeShipping } from '@/lib/shipping'
 import type { CheckoutDetails, Order, OrderLine } from '@/types/commerce'
 
 const STORAGE_KEY = 'empress:orders'
@@ -93,7 +94,8 @@ export async function placeOrder(
     return { ok: false, error: 'Your bag is empty.' }
   }
 
-  const { subtotal, currency, freeShipping } = summarizeBag(lines)
+  const { subtotal, currency } = summarizeBag(lines)
+  const freeShipping = qualifiesForFreeShipping(subtotal, details.country)
   const order: Order = {
     reference: createReference(),
     placedAt: new Date().toISOString(),

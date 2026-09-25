@@ -28,6 +28,16 @@ export {
   measuringSteps,
   sizeGuideNotes,
   faqItems,
-  pendingPages,
+  shippingPolicy,
+  privacyPolicy,
+  termsOfService,
 } from './customerCare'
-export type { SizeRow, MeasureStep, FaqItem, PendingPage } from './customerCare'
+export type {
+  SizeRow,
+  MeasureStep,
+  FaqItem,
+  PolicySection,
+  PolicyDocument,
+} from './customerCare'
+export { business, contactChannels, deliveryEstimates } from './business'
+export type { ContactChannel, ContactChannelId, DeliveryEstimate } from './business'
