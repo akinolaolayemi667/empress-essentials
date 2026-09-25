@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /checkout
+Disallow: /account
+Disallow: /wishlist
+Disallow: /search
+
+Sitemap: https://empress-essentials.vercel.app/sitemap.xml

@@ -32,16 +32,20 @@ export function QuickViewModal({
   const [size, setSize] = useState<string>('')
   const [quantity, setQuantity] = useState(1)
   const [sizeError, setSizeError] = useState(false)
+  const [shownId, setShownId] = useState<string | null>(null)
+
+  const activeId = open && product ? product.id : null
+  if (activeId !== shownId) {
+    setShownId(activeId)
+    if (product && activeId) {
+      setSize(product.sizes?.[0] ?? '')
+      setQuantity(1)
+      setSizeError(false)
+    }
+  }
 
   useBodyScrollLock(open)
   useEscapeKey(onClose, open)
-
-  useEffect(() => {
-    if (!product) return
-    setSize(product.sizes?.[0] ?? '')
-    setQuantity(1)
-    setSizeError(false)
-  }, [product])
 
   useEffect(() => {
     if (open) closeRef.current?.focus()

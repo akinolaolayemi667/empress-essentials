@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { Suspense, type ReactNode } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router'
 import { SiteFooter } from './SiteFooter'
 import { SiteHeader } from './SiteHeader'
@@ -18,7 +18,11 @@ export function RootLayout({ children, className }: RootLayoutProps) {
     <div className={cn('flex min-h-screen flex-col bg-canvas text-ink', className)}>
       <SiteHeader />
       <main id="main-content" className="flex-1">
-        {children ?? <Outlet />}
+        {children ?? (
+          <Suspense fallback={<div aria-busy="true" className="min-h-[70vh]" />}>
+            <Outlet />
+          </Suspense>
+        )}
       </main>
       <SiteFooter />
       <ScrollRestoration />
