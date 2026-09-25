@@ -1,12 +1,16 @@
 import { createBrowserRouter } from 'react-router'
 import { RootLayout } from '@/components/layout'
 import {
+  AboutPage,
   CollectionPage,
   CollectionsPage,
   HomePage,
+  LookbookPage,
   NotFoundPage,
   ProductPage,
+  SearchPage,
   ShopPage,
+  WishlistPage,
 } from '@/pages'
 
 export const router = createBrowserRouter([
@@ -19,6 +23,10 @@ export const router = createBrowserRouter([
       { path: 'product/:slug', element: <ProductPage /> },
       { path: 'collections', element: <CollectionsPage /> },
       { path: 'collections/:slug', element: <CollectionPage /> },
+      { path: 'search', element: <SearchPage /> },
+      { path: 'wishlist', element: <WishlistPage /> },
+      { path: 'lookbook', element: <LookbookPage /> },
+      { path: 'about', element: <AboutPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

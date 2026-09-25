@@ -13,7 +13,13 @@ export function filterProducts(
   catalog: Product[] = products,
   filter: ProductFilter = DEFAULT_FILTER,
 ): Product[] {
-  const query = filter.query.trim().toLowerCase()
+  // Loose plural handling so "dresses" or "tops" still match "dress" / "top"
+  const terms = filter.query
+    .trim()
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((term) => (term.length > 3 ? term.replace(/(es|s)$/, '') : term))
 
   let result = catalog.filter((product) => {
     if (filter.inStockOnly && !product.inStock) return false
@@ -55,17 +61,20 @@ export function filterProducts(
       const colors = product.colors ?? []
       if (!filter.colors.some((color) => colors.includes(color))) return false
     }
-    if (query) {
+    if (terms.length > 0) {
       const haystack = [
         product.name,
         product.description ?? '',
         product.collection,
         product.category,
+        product.styleCategory,
+        product.badge ?? '',
+        ...(product.colors ?? []),
         ...(product.tags ?? []),
       ]
         .join(' ')
         .toLowerCase()
-      if (!haystack.includes(query)) return false
+      if (!terms.every((term) => haystack.includes(term))) return false
     }
     return true
   })

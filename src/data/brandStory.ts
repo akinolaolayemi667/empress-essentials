@@ -40,3 +40,47 @@ export const brandStory = {
     },
   ] satisfies BrandPrinciple[],
 } as const
+
+export type AboutChapter = {
+  label: string
+  title: string
+  body: string
+  image: string
+  imageAlt: string
+}
+
+/** Our Story page — philosophy and approach only; add founder or history details when available */
+export const aboutPage = {
+  label: 'Our Story',
+  title: 'More Than What You Wear.',
+  intro:
+    'Empress Essentials is a considered wardrobe for women who want their clothes to say something — new season pieces and one-of-a-kind thrift finds, curated side by side.',
+  heroImage: {
+    src: '/images/brand-story.jpg',
+    alt: 'Empress Essentials brand editorial portrait',
+  },
+  quote: 'Style should feel like you, not everyone else.',
+  chapters: [
+    {
+      label: 'New & Thrift',
+      title: 'Side by Side, On Purpose.',
+      body: 'We believe a great wardrobe is never all new or all vintage. New arrivals bring clean lines and modern ease; thrift brings texture, history and pieces no one else will be wearing. Together, they make getting dressed feel personal.',
+      image: '/images/hero-secondary.jpg',
+      imageAlt: 'Detail of curated fashion styling',
+    },
+    {
+      label: 'Curation',
+      title: 'Selected, Not Stocked.',
+      body: 'Every piece earns its place. We look for cut, fabric and character, and we pass on anything that feels like filler. Thrift finds are chosen one at a time for their condition and the way they wear today.',
+      image: '/images/collection-thrift.jpg',
+      imageAlt: 'Thrift edit — expressive vintage-inspired layers',
+    },
+    {
+      label: 'Versatility',
+      title: 'Made to Be Worn.',
+      body: 'From everyday essentials to statement pieces, we choose clothes that work harder — pieces that layer, restyle and move from one part of your life to the next.',
+      image: '/images/lookbook-02.jpg',
+      imageAlt: 'Evening look with refined drapery',
+    },
+  ] satisfies AboutChapter[],
+} as const

@@ -161,11 +161,16 @@ export function SiteHeader() {
               <Menu size={20} strokeWidth={1.4} />
             </IconAction>
 
-            <Logo className="absolute left-1/2 -translate-x-1/2 text-center" />
+            <Logo stacked className="absolute left-1/2 -translate-x-1/2 text-center" />
 
-            <IconAction label="Shopping bag" onClick={openBag} badge={itemCount}>
-              <ShoppingBag size={18} strokeWidth={1.4} />
-            </IconAction>
+            <div className="flex items-center">
+              <IconAction label="Search" onClick={openSearch}>
+                <Search size={18} strokeWidth={1.4} />
+              </IconAction>
+              <IconAction label="Shopping bag" onClick={openBag} badge={itemCount}>
+                <ShoppingBag size={18} strokeWidth={1.4} />
+              </IconAction>
+            </div>
           </Container>
         </header>
       </div>
